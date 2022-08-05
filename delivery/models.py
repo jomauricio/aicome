@@ -12,45 +12,45 @@ class Restaurante(models.Model):
     def __str__(self):
         return self.nome
 
-# class Produto(models.Model):
+class Produto(models.Model):
 
-#     nome = models.CharField('Nome', max_length=255)
-#     descricao = models.CharField('Descrição', max_length=255)
-#     valor = models.DecimalField('Valor', max_digits=5, decimal_places=2)
-#     restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, verbose_name='Restaurante')
+    nome = models.CharField('Nome', max_length=255)
+    descricao = models.CharField('Descrição', max_length=255)
+    valor = models.DecimalField('Valor', max_digits=5, decimal_places=2)
+    estoque = models.PositiveIntegerField('Estoque')
+    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, verbose_name='Restaurante')
 
-#     def __str__(self):
-#         return self.nome
+    def __str__(self):
+        return self.nome
 
 
-# class Pedido(models.Model):
+class Pedido(models.Model):
 
-#     PEDIDO_STATUS = [
-#         ('Aberto', 'Aberto'),
-#         ('Recebido', 'Recebido'),
-#         ('Em preparo', 'Em preparo'),
-#         ('Saiu para entrega', 'Saiu para entrega'),
-#     ]
+    PEDIDO_STATUS = [
+        ('Aberto', 'Aberto'),
+        ('Recebido', 'Recebido'),
+        ('Em preparo', 'Em preparo'),
+        ('Saiu para entrega', 'Saiu para entrega'),
+    ]
 
-#     restaurante = models.OneToOneField(Restaurante, on_delete=models.DO_NOTHING, verbose_name='Restaurante')
-#     valor_total = models.DecimalField('Total', max_digits=5, decimal_places=2, null=True)
-#     status = models.CharField('Descrição', max_length=25, choices=PEDIDO_STATUS)
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, verbose_name='Usuário')
+    valor_total = models.DecimalField('Total', max_digits=5, decimal_places=2, null=True)
+    status = models.CharField('Descrição', max_length=25, choices=PEDIDO_STATUS)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, verbose_name='Usuário')
 
-#     def __str__(self):
-#         return 'Pedido nº: %d - Status: %s' % (self.pk, self.status)
+    def __str__(self):
+        return 'Pedido nº: %d - Status: %s' % (self.pk, self.status)
 
-# class ItemPedido(models.Model):
+class ItemPedido(models.Model):
 
-#     pedido = models.ForeignKey(Pedido, on_delete=models.DO_NOTHING, verbose_name='Pedido')
-#     produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING, verbose_name='Produto')
-#     quantidade = models.IntegerField('Quantidade')
-#     valor_total = models.DecimalField('Total', max_digits=5, decimal_places=2, null=True)
-#     obs = models.CharField('Observação', max_length=255)
+    pedido = models.ForeignKey(Pedido, on_delete=models.DO_NOTHING, verbose_name='Pedido')
+    produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING, verbose_name='Produto')
+    quantidade = models.IntegerField('Quantidade')
+    valor_total = models.DecimalField('Total', max_digits=5, decimal_places=2, null=True)
+    obs = models.CharField('Observação', max_length=255)
 
-#     def __str__(self):
-#         return 'Item: %s - Quant.: %d' % (self.produto.nome, self.quantidade)
+    def __str__(self):
+        return 'Item: %s - Quant.: %d' % (self.produto.nome, self.quantidade)
     
-#     class Meta:
-#         verbose_name = 'Item de Pedido'
-#         verbose_name_plural = 'Itens de Pedido'
+    class Meta:
+        verbose_name = 'Item de Pedido'
+        verbose_name_plural = 'Itens de Pedido'

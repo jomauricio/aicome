@@ -1,27 +1,27 @@
 from django.contrib import admin
-from .models import Restaurante #, Pedido, ItemPedido, Produto
-from .forms import RestauranteForm #, PedidoForm, ItemPedidoForm, ProdutoForm
+from .models import Produto, Restaurante, Pedido, ItemPedido
+from .forms import RestauranteForm, ProdutoForm, PedidoForm, ItemPedidoForm
 # Register your models here.
+
+class ProdutoAdminStackedInline(admin.StackedInline):
+    model = Produto
+    form = ProdutoForm
 
 class RestauranteAdmin(admin.ModelAdmin):
     model = Restaurante
     form = RestauranteForm
+    inlines = [ProdutoAdminStackedInline]
 
-# class PedidoAdmin(admin.ModelAdmin):
-#     model = Pedido
-#     form = PedidoForm
-#     readonly_fields=('valor_total',)
+class ItemPedidoAdminStackedInline(admin.StackedInline):
+    model = ItemPedido
+    form = ItemPedidoForm
+    readonly_fields=('valor_total',)
 
-# class ItemPedidoAdmin(admin.ModelAdmin):
-#     model = ItemPedido
-#     form = ItemPedidoForm
-#     readonly_fields=('valor_total',)
-
-# class ProdutoAdmin(admin.ModelAdmin):
-#     model = Produto
-#     form = ProdutoForm
+class PedidoAdmin(admin.ModelAdmin):
+    model = Pedido
+    form = PedidoForm
+    readonly_fields=('valor_total',)
+    inlines = [ItemPedidoAdminStackedInline]
 
 admin.site.register(Restaurante, RestauranteAdmin)
-# admin.site.register(Pedido, PedidoAdmin)
-# admin.site.register(ItemPedido, ItemPedidoAdmin)
-# admin.site.register(Produto, ProdutoAdmin)
+admin.site.register(Pedido, PedidoAdmin)
