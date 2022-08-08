@@ -37,11 +37,11 @@ class Pedido(models.Model):
     cod = RandomCharField(length=6, include_alpha=False)
     end_entrega = AddressField()
     valor_total = models.DecimalField('Total', max_digits=5, decimal_places=2, null=True)
-    status = models.CharField('Descrição', max_length=25, choices=PEDIDO_STATUS)
+    status = models.CharField('Status', max_length=25, choices=PEDIDO_STATUS)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, verbose_name='Usuário')
 
     def __str__(self):
-        return 'Pedido nº: %d - Status: %s' % (self.pk, self.status)
+        return 'Pedido nº: %s - Status: %s' % (self.cod, self.status)
 
 class ItemPedido(models.Model):
 

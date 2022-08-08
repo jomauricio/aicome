@@ -26,8 +26,8 @@ class ItemPedidoAdminStackedInline(admin.StackedInline):
 class PedidoAdmin(admin.ModelAdmin):
     model = Pedido
     form = PedidoForm
-    list_display = ('user', 'status', 'valor_total')
-    # search_fields = ['cod', 'end_entrega__raw ']
+    list_display = ('cod', 'user', 'end_entrega', 'status', 'valor_total')
+    search_fields = ['cod', 'end_entrega__raw ']
     list_filter = ['status']
     autocomplete_fields = ['user']
     readonly_fields=('valor_total',)
