@@ -1,6 +1,7 @@
 from address.models import AddressField
 from django.conf import settings
 from django.db import models
+from django_extensions.db.fields import RandomCharField
 # Create your models here.
 
 class Restaurante(models.Model):
@@ -33,6 +34,8 @@ class Pedido(models.Model):
         ('Saiu para entrega', 'Saiu para entrega'),
     ]
 
+    cod = RandomCharField(length=6, include_alpha=False)
+    end_entrega = AddressField()
     valor_total = models.DecimalField('Total', max_digits=5, decimal_places=2, null=True)
     status = models.CharField('Descrição', max_length=25, choices=PEDIDO_STATUS)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, verbose_name='Usuário')
