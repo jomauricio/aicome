@@ -35,17 +35,20 @@ class Pedido(models.Model):
     ]
 
     cod = RandomCharField(length=6, include_alpha=False)
-    end_entrega = AddressField()
+    end_entrega = AddressField(verbose_name='Endereço de entrega', null=True)
     valor_total = models.DecimalField('Total', max_digits=5, decimal_places=2, null=True)
     status = models.CharField('Status', max_length=25, choices=PEDIDO_STATUS)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, verbose_name='Usuário')
 
     def __str__(self):
         return 'Pedido nº: %s - Status: %s' % (self.cod, self.status)
+    
+    def cal_valor_total(self):
+        return self.itempedido_set.aggregate(models.Sum('valor_total'))['valor_total__sum']
 
 class ItemPedido(models.Model):
 
-    pedido = models.ForeignKey(Pedido, on_delete=models.DO_NOTHING, verbose_name='Pedido')
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, verbose_name='Pedido')
     produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING, verbose_name='Produto')
     quantidade = models.IntegerField('Quantidade')
     valor_total = models.DecimalField('Total', max_digits=5, decimal_places=2, null=True)
@@ -53,6 +56,9 @@ class ItemPedido(models.Model):
 
     def __str__(self):
         return 'Item: %s - Quant.: %d' % (self.produto.nome, self.quantidade)
+
+    def cal_valor_total(self):
+        return self.quantidade * self.produto.valor
     
     class Meta:
         verbose_name = 'Item de Pedido'

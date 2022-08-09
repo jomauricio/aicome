@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load i18n %}
+{% block head_title %}Cancelar Pedido nº: {{ pedido.cod }}{% endblock head_title %}
+{% block content %}
+    <h1 class="mt-5">Cancelar o Pedido</h1>
+    <p>Você tem certeza que quer cancelar o Pedido nº: {{ pedido.cod }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form layout='inline' %}
+        {% buttons %}
+        <button class="btn btn-danger" type="submit">Cancelar</button>
+    {% endbuttons %}
+</form>
+{% endblock %}

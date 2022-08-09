@@ -25,12 +25,30 @@
     </div>
     <h3 class="mt-4 text-center text-muted">Escolha um produto!</h3>
     <ul class="list-group list-group-flush my-5">
-        {% for item in restaurante.produto_set.all %}
-            <li class="list-group-item">{{ item.nome }} - {{ item.valor }}</li>
-        {% empty %}
-            <div class="text-center">Sem produtos cadastrados!</div>
-        {% endfor %}
-    </ul>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Adicionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in restaurante.produto_set.all %}
+                    <tr>
+                        <th scope="row">{{ item.pk }}</th>
+                        <td>{{ item.nome }}</td>
+                        <td>{{ item.descricao }}</td>
+                        <td>{{ item.valor }}</td>
+                        <td>
+                            <a href="{% url 'add-item-pedido' restaurante.pk item.pk %}" class="btn btn-danger">+</a>
+                        </td>
+                    </tr>          
+                {% endfor %}
+            </tbody>
+        </table>
 {% endblock content %}
 {% block googleapis %}
 {% endblock googleapis %}

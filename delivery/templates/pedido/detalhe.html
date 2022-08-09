@@ -22,15 +22,41 @@
     <div class="jumbotron mt-5">
         <h1>Pedido nº: {{ pedido.cod }}</h1>
         <p class="lead">{{ pedido.status }}</p>
+        <p class="lead">{{ pedido.valor_total }}</p>
     </div>
     <h3 class="mt-4 text-center text-muted">Itens do pedido</h3>
-    <ul class="list-group list-group-flush my-5">
-        {% for item in pedido.itempedido_set.all %}
-            <li class="list-group-item">{{ item.produto }}</li>
-        {% empty %}
-            <div class="text-center">Sem itens cadastrados!</div>
-        {% endfor %}
-        </ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Total</th>
+                <th scope="col">Modificar</th>
+                <th scope="col">Remover</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in pedido.itempedido_set.all %}
+                <tr>
+                    <th scope="row">{{ item.pk }}</th>
+                    <td>{{ item.produto.nome }}</td>
+                    <td>{{ item.obs }}</td>
+                    <td>{{ item.quantidade }}</td>
+                    <td>{{ item.produto.valor }}</td>
+                    <td>{{ item.valor_total }}</td>
+                    <td>
+                        <a href="#" class="btn btn-alert">Modificar</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'item-delete' item.pk %}" class="btn btn-danger">Remover</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% endblock content %}
     {% block googleapis %}
     {% endblock googleapis %}
