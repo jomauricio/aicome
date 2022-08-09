@@ -3,6 +3,8 @@ from .models import Restaurante, Pedido, Produto, ItemPedido
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 class RestauranteListView(ListView):
@@ -16,18 +18,22 @@ class RestauranteDetailView(DetailView):
     context_object_name = 'restaurante'
     template_name = 'restaurante/detalhe.html'
 
-class PedidoListView(ListView):
+class PedidoListView(LoginRequiredMixin, ListView):
     model = Pedido
     context_object_name = 'pedidos'
     template_name = 'pedido/listar.html'
 
+    def get_queryset(self):
+        queryset = Pedido.objects.filter(user=self.request.user)
+        return queryset
 
-class PedidoDetailView(DetailView):
+
+class PedidoDetailView(LoginRequiredMixin, DetailView):
     model = Pedido
     context_object_name = 'pedido'
     template_name = 'pedido/detalhe.html'
 
-
+@login_required
 def add_item_pedido(request, pk_restaurente, pk_produto):
     restaurante = get_object_or_404(Restaurante, pk=pk_restaurente)
     produto = get_object_or_404(Produto, pk=pk_produto)
@@ -66,7 +72,7 @@ def add_item_pedido(request, pk_restaurente, pk_produto):
         messages.success(request, "Item adicionado com sucesso!")
         return redirect('pedido-detalhe', pk=pedido.pk)
 
-class PedidoDeleteView(DeleteView):
+class PedidoDeleteView(LoginRequiredMixin, DeleteView):
     model = Pedido
     context_object_name = 'pedido'
     template_name_suffix = ''
@@ -78,6 +84,7 @@ class PedidoDeleteView(DeleteView):
             del self.request.session['pedido_cod']
         return super(PedidoDeleteView, self).post(*args, **kwargs)
 
+@login_required
 def deletar_item_pedido(request, pk):
     item_pedido = get_object_or_404(ItemPedido, pk=pk)
     messages.success(request, 'Item de pedido removido!')

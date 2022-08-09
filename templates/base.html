@@ -78,26 +78,31 @@
                     {% endblock nav_link %}
                 </ul>
                 <ul class="navbar-nav ml-auto">
+                    {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle"
                            href="#"
                            role="button"
                            data-toggle="dropdown"
                            aria-expanded="false">
-                           <i class="fa-solid fa-face-smile text-danger"></i>
-                            <!-- <img src="https://via.placeholder.com/35"
-                                 class="rounded-circle"
-                                 alt="User"
-                                 width="35"
-                                 height="35"/> -->
+                           {{ user.email }}
+                            <i class="fa-solid fa-user text-danger"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="#">Perfil</a>
-                            <a class="dropdown-item" href="#">Configurações</a>
+                            <a class="dropdown-item" href="/admin">Configurações</a>
                             <hr class="dropdown-divider"/>
-                            <a class="dropdown-item" href="#">Sair</a>
+                            <a class="dropdown-item" href="{% url 'account_logout' %}">Sair</a>
                         </div>
                     </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-danger"
+                           href="{% url 'account_signup' %}"
+                           role="button">Registrar</a>
+                        <a class="btn btn-danger" href="{% url 'account_login' %}" role="button">Login</a>
+                    </li>
+                {% endif %}
                 </ul>
             </div>
         </nav>
