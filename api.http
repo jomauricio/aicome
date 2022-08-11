@@ -17,11 +17,11 @@ content-type: application/json
 
 POST http://127.0.0.1:8000/api/restaurantes/ HTTP/1.1
 content-type: application/json
-# Authorization: Basic mauricio:123456
+Authorization: Basic mauricio:123456
 
 {
-  "nome": "Delicia Italiana",
-  "fone": "867232654",
+  "nome": "Nordestina",
+  "fone": "78857357",
   "endereco": 2
 }
 ###
