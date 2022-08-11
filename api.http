@@ -25,3 +25,9 @@ Authorization: Basic mauricio:123456
   "endereco": 2
 }
 ###
+
+GET http://127.0.0.1:8000/api/produtos/6 HTTP/1.1
+content-type: application/json
+# Authorization: Basic mauricio:123456
+
+###

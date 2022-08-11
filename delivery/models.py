@@ -19,7 +19,7 @@ class Produto(models.Model):
     descricao = models.CharField('Descrição', max_length=255)
     valor = models.DecimalField('Valor', max_digits=5, decimal_places=2)
     estoque = models.PositiveIntegerField('Estoque')
-    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, verbose_name='Restaurante')
+    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, verbose_name='Restaurante', related_name='produtos')
 
     def __str__(self):
         return self.nome

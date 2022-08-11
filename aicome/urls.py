@@ -19,10 +19,11 @@ from core.views import IndexView
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
-from delivery.views import RestauranteViewSet, RestauranteGenericListCreateAPIView, RestauranteGenericRetrieveUpdateDestroyAPIView
+from delivery.views import RestauranteViewSet, ProdutoViewSet
 
 router = routers.DefaultRouter()
-router.register(r'api/restaurantes', RestauranteViewSet)
+router.register(r'api/restaurantes', RestauranteViewSet, basename='restaurantes')
+router.register(r'api/produtos', ProdutoViewSet, basename='produtos')
 
 urlpatterns = [
     path('', IndexView.as_view(), name='homepage'),
