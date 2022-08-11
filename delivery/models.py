@@ -7,7 +7,7 @@ from django_extensions.db.fields import RandomCharField
 class Restaurante(models.Model):
 
     nome = models.CharField('Nome', max_length=255)
-    endereco = AddressField()
+    endereco = AddressField(null=True, blank=True, on_delete=models.SET_NULL)
     fone = models.CharField('Telefone', max_length=15)
 
     def __str__(self):

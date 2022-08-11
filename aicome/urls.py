@@ -19,7 +19,7 @@ from core.views import IndexView
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
-from delivery.views import RestauranteViewSet
+from delivery.views import RestauranteViewSet, RestauranteGenericListCreateAPIView, RestauranteGenericRetrieveUpdateDestroyAPIView
 
 router = routers.DefaultRouter()
 router.register(r'api/restaurantes', RestauranteViewSet)
@@ -30,5 +30,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('delivery/', include('delivery.urls')),
     path('api-auth/', include('rest_framework.urls')),
+    # path('api/restaurantes/', RestauranteGenericListCreateAPIView.as_view()),
+    # path('api/restaurantes/<int:pk>', RestauranteGenericRetrieveUpdateDestroyAPIView.as_view()),
     path('', include(router.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
