@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from rest_framework import viewsets
+from .serializers import RestauranteSerializer
 # Create your views here.
 
 class RestauranteListView(ListView):
@@ -96,3 +98,8 @@ def deletar_item_pedido(request, pk):
         return redirect('pedido-delete', pk=pedido.pk)
     else:
         return redirect('pedido-detalhe', pk=pedido.pk)
+
+# ViewSets define the view behavior.
+class RestauranteViewSet(viewsets.ModelViewSet):
+    queryset = Restaurante.objects.all()
+    serializer_class = RestauranteSerializer

@@ -18,10 +18,17 @@ from django.urls import path, include
 from core.views import IndexView
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework import routers
+from delivery.views import RestauranteViewSet
+
+router = routers.DefaultRouter()
+router.register(r'api/restaurantes', RestauranteViewSet)
 
 urlpatterns = [
     path('', IndexView.as_view(), name='homepage'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('delivery/', include('delivery.urls')),
+    path('api-auth/', include('rest_framework.urls')),
+    path('', include(router.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
