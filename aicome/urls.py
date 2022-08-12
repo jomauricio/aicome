@@ -19,6 +19,7 @@ from core.views import IndexView
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
+from rest_framework.authtoken import views
 from delivery.views import RestauranteViewSet, ProdutoViewSet, PedidoViewSet, add_item_pedido_api
 
 router = routers.DefaultRouter()
@@ -35,5 +36,6 @@ urlpatterns = [
     # path('api/restaurantes/', RestauranteGenericListCreateAPIView.as_view()),
     # path('api/restaurantes/<int:pk>', RestauranteGenericRetrieveUpdateDestroyAPIView.as_view()),
     path('', include(router.urls)),
+    path('api-token-auth/', views.obtain_auth_token),
     path('api/pedidos/add/<int:pk_restaurente>/<int:pk_produto>/', add_item_pedido_api)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

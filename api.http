@@ -4,7 +4,7 @@ content-type: application/json
 
 ###
 
-GET  http://127.0.0.1:8000/api/restaurantes/5 HTTP/1.1
+GET  https://127.0.0.1:8000/api/restaurantes/5 HTTP/1.1
 content-type: application/json
 # Authorization: Basic mauricio:123456
 
@@ -38,14 +38,23 @@ content-type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/api/pedidos/ HTTP/1.1
-content-type: application/json
-# Authorization: Basic mauricio:123456
-
-###
-
-POST http://127.0.0.1:8080/api/pedidos/add/1/7/ HTTP/1.1
+GET http://127.0.0.1:8080/api/pedidos/ HTTP/1.1
 content-type: application/json
 Authorization: Basic mauricio:123456
 
+###
+
+POST http://127.0.0.1:8000/api/pedidos/add/3/8/ HTTP/1.1
+content-type: application/json
+Authorization: Token 1379f8374e8425facb91a52937e238fac621ffc5
+
+###
+
+POST http://127.0.0.1:8000/api-token-auth/ HTTP/1.1
+content-type: application/json
+
+{
+  "username": "mauricio",
+  "password": "123456"
+}
 ###
