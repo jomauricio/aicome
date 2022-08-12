@@ -5,11 +5,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .serializers import RestauranteSerializer, ProdutoSerializer
-# from rest_framework.decorators import api_view, permission_classes
-# from rest_framework.response import Response
+from .serializers import RestauranteSerializer, ProdutoSerializer, PedidoSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 from rest_framework import generics, permissions, status, viewsets
-# from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 # from rest_framework.views import APIView
 # from django.http import Http404
 
@@ -113,6 +113,48 @@ class RestauranteViewSet(viewsets.ModelViewSet):
 class ProdutoViewSet(viewsets.ModelViewSet):
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
+
+class PedidoViewSet(viewsets.ModelViewSet):
+    queryset = Pedido.objects.all()
+    serializer_class = PedidoSerializer
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_item_pedido_api(request, pk_restaurente, pk_produto):
+    restaurante = get_object_or_404(Restaurante, pk=pk_restaurente)
+    produto = get_object_or_404(Produto, pk=pk_produto)
+
+    if 'pedido_cod' in request.session:
+
+        pedido = get_object_or_404(Pedido, cod=request.session['pedido_cod'])
+
+        if restaurante == pedido.itempedido_set.first().produto.restaurante:
+            
+            if ItemPedido.objects.filter(produto__pk=pk_produto):
+                return Response("Produto ja adicionado no pedido!", status=status.HTTP_304_NOT_MODIFIED)
+            else:
+                item_pedido = ItemPedido(
+                    pedido=pedido, produto=produto, quantidade=1)
+                item_pedido.valor_total = item_pedido.cal_valor_total()
+                item_pedido.save()
+                pedido.valor_total = pedido.cal_valor_total()
+                pedido.save()
+                serializer = PedidoSerializer(instance=pedido)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response("Produto inexistente no restaurante!", status=status.HTTP_304_NOT_MODIFIED)
+    else:
+        pedido = Pedido.objects.create(
+            user=request.user, status=Pedido.PEDIDO_STATUS[0][0])
+        request.session['pedido_cod'] = pedido.cod
+        item_pedido = ItemPedido(
+            pedido=pedido, produto=produto, quantidade=1)
+        item_pedido.valor_total = item_pedido.cal_valor_total()
+        item_pedido.save()
+        pedido.valor_total = pedido.cal_valor_total()
+        pedido.save()
+        serializer = PedidoSerializer(instance=pedido)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # @api_view(['GET', 'POST'])
 # # @permission_classes([IsAuthenticated])
